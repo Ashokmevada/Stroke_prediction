@@ -1,5 +1,16 @@
 # End-to-end-Machine-Learning-Project-with-MLflow
 
+## Preprocessing Steps
+
+	1. Missing Values
+	2. Duplicate Values
+	3. Removing outliers
+	4. Feature Selection
+	5. Scaling of data
+	6. Encoding of features
+	7. Feature Engineering
+	8. Dimensionality reduction
+	9. 
 
 ## Workflows
 
