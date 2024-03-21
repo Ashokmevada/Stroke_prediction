@@ -8,7 +8,9 @@ from ensure import ensure_annotations
 from box import ConfigBox
 from pathlib import Path
 from typing import Any
-
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
+import sys
 
 
 @ensure_annotations
@@ -124,6 +126,39 @@ def get_size(path: Path) -> str:
     """
     size_in_kb = round(os.path.getsize(path)/1024)
     return f"~ {size_in_kb} KB"
+
+def evaluteModel(X_train , X_test , y_train, y_test , models , params):
+
+    try:
+        
+        report = {}
+
+        for i in range(len(list(models))):
+            model = list(models.values())[i]
+            parameteres = params[list(models.keys())[i]]
+
+            gs = GridSearchCV(model , param_grid= parameteres , cv=3)
+            gs.fit(X_train , y_train)
+
+            model.set_params(**gs.best_params_)
+            model.fit(X_train , y_train)
+
+            y_train_pred = model.predict(X_train)
+
+            y_test_pred = model.predict(X_test)
+
+            train_model_score = accuracy_score(y_train_pred , y_train)
+
+            test_model_score = accuracy_score(y_test_pred , y_test)
+
+            report[list(models.keys())[i]] = test_model_score
+
+
+        return report
+    
+    except Exception as e:
+
+        raise Exception(e , sys)
 
 
 

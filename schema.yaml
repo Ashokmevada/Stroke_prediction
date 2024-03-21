@@ -9,5 +9,8 @@ COLUMNS:
   Residence_type : object
   avg_glucose_level : float64
   bmi : float64
-  smoking_status : object
+  smoking_status d: object
   stroke : int64
+
+TARGET_COLUMN:
+  name: stroke
