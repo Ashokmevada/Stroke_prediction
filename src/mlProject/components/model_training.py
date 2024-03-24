@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from mlProject import logger
+from src.mlProject import logger
 from sklearn.linear_model import LogisticRegression 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
@@ -12,9 +12,13 @@ from sklearn.naive_bayes import GaussianNB
 from xgboost import XGBClassifier
 from sklearn.linear_model import ElasticNet
 import joblib
-from mlProject.entity.config_entity import ModelTrainerConfig
-from mlProject.utils.common import evaluteModel
+from src.mlProject.entity.config_entity import ModelTrainerConfig
+from src.mlProject.utils.common import evaluteModel
 import sys
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
 
 
 
@@ -23,7 +27,7 @@ class ModelTrainer:
         self.config = config
 
     
-    def train(self):
+    def train(self , model_evaluation_config):
 
         try:
 
@@ -52,7 +56,7 @@ class ModelTrainer:
             hyperparameters = {
 
                     "Logistic Regression": {
-                        "penalty": ["l1", "l2"],
+                        "penalty": ["l2"],
                         "C": [0.01, 0.1, 1.0, 10.0],
                         "class_weight" : ['balanced'],
                         "solver" : ['lbfgs', 'liblinear', 'newton-cg' , 'newton-cholesky' , 'sag' , 'saga' ]
@@ -107,7 +111,7 @@ class ModelTrainer:
             
             logger.info("evaluate model started")
 
-            model_performance:dict = evaluteModel(train_x , test_x , train_y , test_y , models , hyperparameters)
+            model_performance:dict = evaluteModel(train_x , test_x , train_y , test_y , models , hyperparameters , model_evaluation_config)
             
             best_model_score = max(sorted(model_performance.values()))
 
