@@ -90,6 +90,10 @@ export MLFLOW_TRACKING_PASSWORD=ffbbf19eb49ca4a5b91f9d1001c49b1c310a8cd0
 
 ```
 
+MLFLOW_TRACKING_URI=https://dagshub.com/ashokmevada18/Stroke_prediction.mlflow \
+MLFLOW_TRACKING_USERNAME=ashokmevada18 \
+MLFLOW_TRACKING_PASSWORD=ffbbf19eb49ca4a5b91f9d1001c49b1c310a8cd0 \
+python script.py
 
 
 # AWS-CICD-Deployment-with-Github-Actions

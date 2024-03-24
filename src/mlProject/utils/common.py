@@ -139,9 +139,8 @@ def get_size(path: Path) -> str:
 
 
 def evaluteModel(X_train, X_test, y_train, y_test, models, params , model_evaluation_config):
-    try:
-
-        
+    
+    try:       
 
         mlflow.set_registry_uri(model_evaluation_config.mlflow_uri)
         print(model_evaluation_config.mlflow_uri)
@@ -159,7 +158,7 @@ def evaluteModel(X_train, X_test, y_train, y_test, models, params , model_evalua
                     parameters = params[model_name]
 
                     # Perform GridSearchCV
-                    gs = GridSearchCV(model, param_grid=parameters, cv=3)
+                    gs = GridSearchCV(model, param_grid=parameters, cv=2)
                     gs.fit(X_train, y_train)
 
                     with mlflow.start_run(nested=True):
@@ -205,18 +204,18 @@ def evaluteModel(X_train, X_test, y_train, y_test, models, params , model_evalua
                     # Add model score to report              
                     report[model_name] = test_accuracy
 
-                    # Model registry does not work with file store
-                    if tracking_url_type_store != "file":
+                # Model registry does not work with file store
+                if tracking_url_type_store != "file":
 
-                        # Register the model
-                        # There are other ways to use the Model Registry, which depends on the use case,
-                        # please refer to the doc for more information:
-                        # https://mlflow.org/docs/latest/model-registry.html#api-workflow
-                        mlflow.sklearn.log_model(model, "model", registered_model_name=model_name)
-                        print("Model registered in DAGSHUB")
-                    else:
-                        mlflow.sklearn.log_model(model, "model")
-                        print("Model saved locally")
+                    # Register the model
+                    # There are other ways to use the Model Registry, which depends on the use case,
+                    # please refer to the doc for more information:
+                    # https://mlflow.org/docs/latest/model-registry.html#api-workflow
+                    mlflow.sklearn.log_model(model, "model", registered_model_name=model_name)
+                    print("Model registered in DAGSHUB")
+                else:
+                    mlflow.sklearn.log_model(model, "model")
+                    print("Model saved locally")
 
         return report
 

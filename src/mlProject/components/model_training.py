@@ -43,7 +43,7 @@ class ModelTrainer:
 
             models = {
                 "Logistic Regression" : LogisticRegression(),
-                "Decision Tree" : DecisionTreeClassifier(),
+                # "Decision Tree" : DecisionTreeClassifier(),
                 "SVC" : SVC(),
                 "Guassian Naive Bayes" : GaussianNB(),
                 "RandomForestClassifier" : RandomForestClassifier(),
@@ -54,60 +54,54 @@ class ModelTrainer:
             }
 
             hyperparameters = {
+                "Logistic Regression": {
+                    "penalty": ["l2"],
+                    "C": [0.01, 0.1, 1.0, 10.0],
+                    "class_weight": ['balanced'],
+                    "solver": ['lbfgs', 'liblinear', 'newton-cg', 'newton-cholesky', 'sag', 'saga']
+                },
 
-                    "Logistic Regression": {
-                        "penalty": ["l2"],
-                        "C": [0.01, 0.1, 1.0, 10.0],
-                        "class_weight" : ['balanced'],
-                        "solver" : ['lbfgs', 'liblinear', 'newton-cg' , 'newton-cholesky' , 'sag' , 'saga' ]
-                    }
-                    ,
-                    "Decision Tree": {
-                        "criterion": ["gini", "entropy"],
-                        "max_depth": [None, 10, 20, 30],
-                        "min_samples_split": [2, 5, 10]
-                    },
+                "SVC": {
+                    "C": [0.01, 0.1, 1.0, 10.0],
+                    "kernel": ["linear", "poly", "rbf", "sigmoid"],
+                    "gamma": ["scaled", "auto"],
+                    "class_weight": ['balanced']
+                },
 
-                    "SVC": {
-                        "C": [0.01, 0.1, 1.0, 10.0],
-                        "kernel": ["linear", "poly", "rbf", "sigmoid"],
-                        "gamma" : ["scaled" , "auto"],
-                        
-                        "class_weight" : ['balanced']
-                    },
+                "Guassian Naive Bayes": {},
 
-                    "Guassian Naive Bayes": {},
+                "RandomForestClassifier": {
+                    "n_estimators": [10, 50, 100],
+                    "max_depth": [None, 10, 20, 30],
+                    "min_samples_split": [2, 5, 10],
+                    "criterion": ["gini", "entropy"],
+                    "class_weight": ['balanced']
+                },
 
-                    "RandomForestClassifier": {
-                        "n_estimators": [10, 50, 100],
-                        "max_depth": [None, 10, 20, 30],
-                        "min_samples_split": [2, 5, 10],
-                        "criterion": ["gini", "entropy"]
-                    },
+                "Adaboost Classifier": {
+                    "n_estimators": [50, 100, 200],
+                    "learning_rate": [0.01, 0.1, 1.0]
+                },
 
-                    "Adaboost Classifier": {
-                        "n_estimators": [50, 100, 200],
-                        "learning_rate": [0.01, 0.1, 1.0]
-                    },
+                "GradientClassifier": {
+                    "n_estimators": [50, 100, 200],
+                    "learning_rate": [0.01, 0.1, 0.2],
+                    "max_depth": [3, 4, 5]
+                },
 
-                    "GradientClassifier": {
-                        "n_estimators": [50, 100, 200],
-                        "learning_rate": [0.01, 0.1, 0.2],
-                        "max_depth": [3, 4, 5]
-                    },
+                "xgboost": {
+                    "n_estimators": [50, 100, 200],
+                    "learning_rate": [0.01, 0.1, 0.2],
+                    "max_depth": [3, 4, 5]
+                },
 
-                    "xgboost": {
-                        "n_estimators": [50, 100, 200],
-                        "learning_rate": [0.01, 0.1, 0.2],
-                        "max_depth": [3, 4, 5]
-                    },
-
-                    "KNN": {
-                        "n_neighbors": [3, 5, 7, 9],
-                        "weights": ["uniform", "distance"],
-                        "algorithm": ["auto", "ball_tree", "kd_tree", "brute"]
-                    }
+                "KNN": {
+                    "n_neighbors": [3, 5, 7, 9],
+                    "weights": ["uniform", "distance"],
+                    "algorithm": ["auto", "ball_tree", "kd_tree", "brute"]
                 }
+            }
+
             
             logger.info("evaluate model started")
 
@@ -127,7 +121,6 @@ class ModelTrainer:
             print( best_model_name , best_model_score)
 
             joblib.dump(best_model, os.path.join(self.config.root_dir, self.config.model_name))
-
             
 
         except Exception as e:
