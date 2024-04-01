@@ -1,6 +1,6 @@
 # End-to-end-Machine-Learning-Project-with-MLflow
 
-## Preprocessing Steps
+## Preprocessing Steps for EDA
 
 	1. Missing Values
 	2. Duplicate Values
