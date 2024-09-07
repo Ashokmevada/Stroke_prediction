@@ -55,9 +55,9 @@ def index():
             
             data = np.array(data).reshape(1, -1)
             
-            predict = model.predict(data)
+            predict = model.predict_proba(data)[0][1]            
 
-            return render_template('index.html', prediction = str(predict))
+            return render_template('index.html', prediction = str(round((predict * 100) , 2)))
 
         except Exception as e:
             print('The Exception message is: ',e)
@@ -68,4 +68,4 @@ def index():
 
 
 if __name__ == "__main__":
-	app.run(host="0.0.0.0")
+	app.run(host='0.0.0.0')

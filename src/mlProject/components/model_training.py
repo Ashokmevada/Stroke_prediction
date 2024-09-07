@@ -43,14 +43,10 @@ class ModelTrainer:
 
             models = {
                 "Logistic Regression" : LogisticRegression(),
-                # "Decision Tree" : DecisionTreeClassifier(),
                 "SVC" : SVC(),
                 "Guassian Naive Bayes" : GaussianNB(),
                 "RandomForestClassifier" : RandomForestClassifier(),
-                "Adaboost Classifier" : AdaBoostClassifier(),
-                "GradientClassifier" : GradientBoostingClassifier(),
-                "xgboost" : XGBClassifier(),
-                "KNN" : KNeighborsClassifier()
+              
             }
 
             hyperparameters = {
@@ -76,30 +72,8 @@ class ModelTrainer:
                     "min_samples_split": [2, 5, 10],
                     "criterion": ["gini", "entropy"],
                     "class_weight": ['balanced']
-                },
-
-                "Adaboost Classifier": {
-                    "n_estimators": [50, 100, 200],
-                    "learning_rate": [0.01, 0.1, 1.0]
-                },
-
-                "GradientClassifier": {
-                    "n_estimators": [50, 100, 200],
-                    "learning_rate": [0.01, 0.1, 0.2],
-                    "max_depth": [3, 4, 5]
-                },
-
-                "xgboost": {
-                    "n_estimators": [50, 100, 200],
-                    "learning_rate": [0.01, 0.1, 0.2],
-                    "max_depth": [3, 4, 5]
-                },
-
-                "KNN": {
-                    "n_neighbors": [3, 5, 7, 9],
-                    "weights": ["uniform", "distance"],
-                    "algorithm": ["auto", "ball_tree", "kd_tree", "brute"]
                 }
+              
             }
 
             
@@ -119,6 +93,7 @@ class ModelTrainer:
                 raise Exception("No best model found")            
 
             print( best_model_name , best_model_score)
+            logger.info("Best model found with score" , best_model_score)
 
             joblib.dump(best_model, os.path.join(self.config.root_dir, self.config.model_name))
             
